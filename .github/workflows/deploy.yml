@@ -1,0 +1,62 @@
+name: Deploy to Yandex Cloud Serverless Containers
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  CR_REGISTRY: ${{ secrets.YC_CONTAINER_REGISTRY }}
+  FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
+  DEPLOY_SA_ID: ${{ secrets.YC_DEPLOY_SA_ID }}
+  RUNTIME_SA_ID: ${{ secrets.YC_RUNTIME_SA_ID }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get Yandex Cloud IAM token
+        id: get-iam-token
+        uses: docker://ghcr.io/yc-actions/yc-iam-token-fed:1.0.0
+        with:
+          yc-sa-id: ${{ secrets.YC_DEPLOY_SA_ID }}
+
+      - name: Login to Yandex Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: cr.yandex
+          username: iam
+          password: ${{ steps.get-iam-token.outputs.token }}
+
+      - name: Build and push Docker image
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t cr.yandex/$CR_REGISTRY/propslaptops:$IMAGE_TAG .
+          docker push cr.yandex/$CR_REGISTRY/propslaptops:$IMAGE_TAG
+
+      - name: Deploy to Serverless Container
+        uses: yc-actions/yc-sls-container-deploy@v3
+        with:
+          yc-sa-id: ${{ env.DEPLOY_SA_ID }}
+          container-name: propslaptops
+          folder-id: ${{ env.FOLDER_ID }}
+          revision-service-account-id: ${{ env.RUNTIME_SA_ID }}
+          revision-cores: 1
+          revision-memory: 512Mb
+          revision-core-fraction: 100
+          revision-concurrency: 8
+          revision-image-url: cr.yandex/${{ env.CR_REGISTRY }}/propslaptops:${{ github.sha }}
+          revision-execution-timeout: 30
+          revision-environment: |
+            {
+              "DB_HOST": "${{ secrets.DB_HOST }}",
+              "DB_PORT": "${{ secrets.DB_PORT }}",
+              "DB_NAME": "${{ secrets.DB_NAME }}",
+              "DB_USER": "${{ secrets.DB_USER }}",
+              "DB_PASSWORD": "${{ secrets.DB_PASSWORD }}",
+              "NODE_ENV": "production"
+            } 

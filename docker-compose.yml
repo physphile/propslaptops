@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:16
+    container_name: propslaptops-db
+    environment:
+      POSTGRES_USER: propslaptops
+      POSTGRES_PASSWORD: propslaptops
+      POSTGRES_DB: propslaptops_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: propslaptops
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://propslaptops:propslaptops@db:5432/propslaptops_db
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

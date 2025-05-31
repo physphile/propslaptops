@@ -1,7 +1,25 @@
+import { cors } from "@elysiajs/cors";
+import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+import { laptopRoutes } from "./routes/laptop";
+import { propertyRoutes } from "./routes/property";
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+const app = new Elysia()
+	.use(cors())
+	.use(
+		swagger({
+			documentation: {
+				tags: [
+					{ description: "CRUD для ноутбуков", name: "laptops" },
+					{ description: "CRUD для свойств", name: "properties" },
+				],
+			},
+			path: "/docs",
+		})
+	)
+	.use(laptopRoutes)
+	.use(propertyRoutes)
+	.listen(3000);
+
+console.log(`🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}/docs`);
