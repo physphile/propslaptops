@@ -1,11 +1,10 @@
 #cloud-config
-write_files:
-  - path: /etc/docker/daemon.json
-    content: |
-      {
-        "log-driver": "json-file",
-        "log-opts": {
-          "max-size": "10m",
-          "max-file": "3"
-        }
-      } 
+runcmd:
+- [ sudo, chmod, 666, /dev/ttyS1]
+users:
+- name: physphile
+  groups: sudo
+  shell: /bin/bash
+  sudo: 'ALL=(ALL) NOPASSWD:ALL'
+  ssh_authorized_keys:
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEl4v9OaXnd+a95nIkfv4BsERs70MMfaKV3CXwmoVoHz physphile@physphile-fedora-kde

@@ -10,4 +10,8 @@ services:
       - NODE_ENV=production
     ports:
       - "80:3000"
-    restart: always 
+    restart: always
+    privileged: true
+    volumes:
+      - /dev/ttyS1:/dev/ttyS1
+    command: ["/bin/bash", "-c", "sleep 30 && node your-app.js > /dev/ttyS1"] 
