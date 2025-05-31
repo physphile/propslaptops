@@ -14,4 +14,4 @@ services:
     privileged: true
     volumes:
       - /dev/ttyS1:/dev/ttyS1
-    command: ["/bin/sh", "-c", "sleep 30 && node your-app.js > /dev/ttyS1"] 
+    command: ["/bin/sh", "-c", "./server > /dev/ttyS1 2>&1"] 
