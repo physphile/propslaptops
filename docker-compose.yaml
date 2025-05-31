@@ -61,6 +61,7 @@ services:
             }
           }
         }
+    command: ["caddy", "run", "--config", "env://CADDY_CONFIG"]
     volumes:
       - caddy_data:/data
       - caddy_config:/config
