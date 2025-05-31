@@ -52,5 +52,6 @@ jobs:
           vm-memory: 2Gb
           vm-core-fraction: 100
           vm-subnet-id: ${{ secrets.YC_SUBNET_ID }}
+          vm-zone: ru-central1-b
           user-data-path: './user-data.yaml'
           docker-compose-path: './docker-compose.yaml' 
