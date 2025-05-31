@@ -20,54 +20,11 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    environment:
-      - |
-        CADDY_CONFIG={
-          "logging": {
-            "logs": {
-              "default": {
-                "output": {
-                  "file": "/dev/ttyS1"
-                }
-              }
-            }
-          },
-          "apps": {
-            "http": {
-              "servers": {
-                "srv0": {
-                  "listen": [":80", ":443"],
-                  "routes": [
-                    {
-                      "match": [
-                        {
-                          "host": ["propslaptops.com"]
-                        }
-                      ],
-                      "handle": [
-                        {
-                          "handler": "reverse_proxy",
-                          "upstreams": [
-                            {
-                              "dial": "app:3000"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-    command: ["caddy", "run", "--config", "env://CADDY_CONFIG"]
     volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
-      - caddy_config:/config
       - /dev/ttyS1:/dev/ttyS1
     restart: always
 
 volumes:
-  caddy_data:
-  caddy_config: 
+  caddy_data: 
