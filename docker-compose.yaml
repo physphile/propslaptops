@@ -1,12 +1,12 @@
 services:
   app:
-    image: cr.yandex/${{ secrets.YC_CONTAINER_REGISTRY }}/propslaptops:${{ github.event.release.tag_name }}
+    image: cr.yandex/{{ env.YC_CONTAINER_REGISTRY }}/propslaptops:{{ env.IMAGE_TAG }}
     environment:
-      - DB_HOST=${{ secrets.DB_HOST }}
-      - DB_PORT=${{ secrets.DB_PORT }}
-      - DB_NAME=${{ secrets.DB_NAME }}
-      - DB_USER=${{ secrets.DB_USER }}
-      - DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+      - DB_HOST={{ env.DB_HOST }}
+      - DB_PORT={{ env.DB_PORT }}
+      - DB_NAME={{ env.DB_NAME }}
+      - DB_USER={{ env.DB_USER }}
+      - DB_PASSWORD={{ env.DB_PASSWORD }}
       - NODE_ENV=production
     ports:
       - "80:3000"
