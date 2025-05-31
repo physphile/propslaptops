@@ -19,11 +19,12 @@ env:
   DB_PORT: ${{ secrets.DB_PORT }}
   DB_NAME: ${{ secrets.DB_NAME }}
   DB_USER: ${{ secrets.DB_USER }}
-  DB_PASSWORD: ${{ steps.encode-password.outputs.encoded }}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      DB_PASSWORD: ${{ steps.encode-password.outputs.encoded }}
     steps:
       - uses: actions/checkout@v4
 
