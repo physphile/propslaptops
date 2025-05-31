@@ -19,7 +19,11 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: postgres://propslaptops:propslaptops@db:5432/propslaptops_db
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: propslaptops_db
+      DB_USER: propslaptops
+      DB_PASSWORD: propslaptops
     depends_on:
       - db
 
