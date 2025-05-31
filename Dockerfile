@@ -1,5 +1,5 @@
 # Этап сборки
-FROM oven/bun:1-alpine AS builder
+FROM oven/bun:alpine AS builder
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ COPY . .
 RUN bun run build
 
 # Этап запуска
-FROM oven/bun-1:alpine
+FROM oven/bun:alpine
 
 WORKDIR /app
 
