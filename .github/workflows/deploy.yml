@@ -20,6 +20,8 @@ env:
   DB_NAME: ${{ secrets.DB_NAME }}
   DB_USER: ${{ secrets.DB_USER }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  YC_VM_USER: ${{ secrets.YC_VM_USER }}
+  YC_VM_USER_SSH_KEY: ${{ secrets.YC_VM_USER_SSH_KEY }}
 
 jobs:
   deploy:
@@ -60,5 +62,5 @@ jobs:
           vm-zone-id: 'ru-central1-b'
           vm-subnet-id: ${{ secrets.YC_SUBNET_ID }}
           vm-public-ip: ${{ secrets.YC_PUBLIC_IP }}
-          user-data-path: './user-data.yaml'
-          docker-compose-path: './docker-compose.yaml' 
+          user-data-path: './ci/user-data.yaml'
+          docker-compose-path: './ci/docker-compose.yaml' 

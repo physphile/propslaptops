@@ -2,9 +2,9 @@
 runcmd:
 - [ sudo, chmod, 666, /dev/ttyS1]
 users:
-- name: physphile
+- name: {{ env.YC_VM_USER }}
   groups: sudo
   shell: /bin/bash
   sudo: 'ALL=(ALL) NOPASSWD:ALL'
   ssh_authorized_keys:
-  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEl4v9OaXnd+a95nIkfv4BsERs70MMfaKV3CXwmoVoHz physphile@physphile-fedora-kde
+  - {{ env.YC_VM_USER_SSH_KEY }}

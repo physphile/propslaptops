@@ -1,7 +1,0 @@
-propslaptops.com {
-    log {
-        output file /dev/ttyS1
-    }
-    
-    reverse_proxy app:3000
-} 
