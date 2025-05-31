@@ -54,12 +54,12 @@ jobs:
           revision-concurrency: 8
           revision-image-url: cr.yandex/${{ env.CR_REGISTRY }}/propslaptops:${{ github.event.release.tag_name }}
           revision-execution-timeout: 30
+          public: true
+          revision-network-id: ${{ secrets.YC_NETWORK_ID }}
           revision-env: |
-            {
-              "DB_HOST": "${{ secrets.DB_HOST }}",
-              "DB_PORT": "${{ secrets.DB_PORT }}",
-              "DB_NAME": "${{ secrets.DB_NAME }}",
-              "DB_USER": "${{ secrets.DB_USER }}",
-              "DB_PASSWORD": "${{ secrets.DB_PASSWORD }}",
-              "NODE_ENV": "production"
-            } 
+            DB_HOST=${{ secrets.DB_HOST }}
+            DB_PORT=${{ secrets.DB_PORT }}
+            DB_NAME=${{ secrets.DB_NAME }}
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            NODE_ENV=production 
