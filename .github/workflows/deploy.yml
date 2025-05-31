@@ -1,9 +1,8 @@
 name: Deploy to Yandex Cloud Serverless Containers
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
   workflow_dispatch:
 
 env:
@@ -33,7 +32,7 @@ jobs:
 
       - name: Build and push Docker image
         env:
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ github.event.release.tag_name }}
         run: |
           docker build -t cr.yandex/$CR_REGISTRY/propslaptops:$IMAGE_TAG .
           docker push cr.yandex/$CR_REGISTRY/propslaptops:$IMAGE_TAG
@@ -49,7 +48,7 @@ jobs:
           revision-memory: 512Mb
           revision-core-fraction: 100
           revision-concurrency: 8
-          revision-image-url: cr.yandex/${{ env.CR_REGISTRY }}/propslaptops:${{ github.sha }}
+          revision-image-url: cr.yandex/${{ env.CR_REGISTRY }}/propslaptops:${{ github.event.release.tag_name }}
           revision-execution-timeout: 30
           revision-environment: |
             {
