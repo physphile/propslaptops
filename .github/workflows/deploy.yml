@@ -15,6 +15,11 @@ env:
   DEPLOY_SA_ID: ${{ secrets.YC_DEPLOY_SA_ID }}
   RUNTIME_SA_ID: ${{ secrets.YC_RUNTIME_SA_ID }}
   IMAGE_TAG: ${{ github.event.release.tag_name }}
+  DB_HOST: ${{ secrets.DB_HOST }}
+  DB_PORT: ${{ secrets.DB_PORT }}
+  DB_NAME: ${{ secrets.DB_NAME }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
 jobs:
   deploy:
