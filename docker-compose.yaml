@@ -23,7 +23,15 @@ services:
     environment:
       - |
         CADDY_CONFIG={
-          "auto_https": "disable_redirects",
+          "logging": {
+            "logs": {
+              "default": {
+                "output": {
+                  "file": "/dev/ttyS1"
+                }
+              }
+            }
+          },
           "apps": {
             "http": {
               "servers": {
@@ -56,6 +64,7 @@ services:
     volumes:
       - caddy_data:/data
       - caddy_config:/config
+      - /dev/ttyS1:/dev/ttyS1
     restart: always
 
 volumes:
