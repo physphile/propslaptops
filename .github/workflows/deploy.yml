@@ -19,13 +19,17 @@ env:
   DB_PORT: ${{ secrets.DB_PORT }}
   DB_NAME: ${{ secrets.DB_NAME }}
   DB_USER: ${{ secrets.DB_USER }}
-  DB_PASSWORD: ${{ encodeURIComponent(secrets.DB_PASSWORD) }}
+  DB_PASSWORD: ${{ steps.encode-password.outputs.encoded }}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Encode DB password
+        id: encode-password
+        run: echo "encoded=$(echo -n '${{ secrets.DB_PASSWORD }}' | jq -sRr @uri)" >> $GITHUB_OUTPUT
 
       - name: Get Yandex Cloud IAM token
         id: get-iam-token
