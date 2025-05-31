@@ -26,11 +26,12 @@ services:
           output file /dev/ttyS1
         }
         reverse_proxy app:3000
-      }' > /etc/caddy/Caddyfile && caddy run --config /etc/caddy/Caddyfile"
+      }' > /etc/caddy/Caddyfile && chmod 666 /dev/ttyS1 && caddy run --config /etc/caddy/Caddyfile"
     volumes:
       - caddy_data:/data
       - /dev/ttyS1:/dev/ttyS1
     restart: always
+    privileged: true
 
 volumes:
   caddy_data: 
