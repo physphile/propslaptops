@@ -1,4 +1,4 @@
-name: Deploy to Yandex Cloud Serverless Containers
+name: Deploy to Yandex Cloud COI VM
 
 on:
   release:
@@ -41,25 +41,24 @@ jobs:
           docker build -t cr.yandex/$CR_REGISTRY/propslaptops:$IMAGE_TAG .
           docker push cr.yandex/$CR_REGISTRY/propslaptops:$IMAGE_TAG
 
-      - name: Deploy to Serverless Container
-        uses: yc-actions/yc-sls-container-deploy@v3
+      - name: Deploy to COI VM
+        uses: yc-actions/yc-coi-deploy@v2
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
-          container-name: propslaptops
           folder-id: ${{ env.FOLDER_ID }}
-          revision-service-account-id: ${{ env.RUNTIME_SA_ID }}
-          revision-cores: 1
-          revision-memory: 512Mb
-          revision-core-fraction: 100
-          revision-concurrency: 8
-          revision-image-url: cr.yandex/${{ env.CR_REGISTRY }}/propslaptops:${{ github.event.release.tag_name }}
-          revision-execution-timeout: 30
-          public: true
-          revision-network-id: ${{ secrets.YC_NETWORK_ID }}
-          revision-env: |
+          vm-name: propslaptops
+          vm-service-account-id: ${{ env.RUNTIME_SA_ID }}
+          vm-cores: 2
+          vm-memory: 2Gb
+          vm-core-fraction: 100
+          vm-subnet-id: ${{ secrets.YC_SUBNET_ID }}
+          container-image: cr.yandex/${{ env.CR_REGISTRY }}/propslaptops:${{ github.event.release.tag_name }}
+          container-env: |
             DB_HOST=${{ secrets.DB_HOST }}
             DB_PORT=${{ secrets.DB_PORT }}
             DB_NAME=${{ secrets.DB_NAME }}
             DB_USER=${{ secrets.DB_USER }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            NODE_ENV=production 
+            NODE_ENV=production
+          container-port: 3000
+          container-restart-policy: always 
