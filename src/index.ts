@@ -19,11 +19,22 @@ const app = new Elysia()
 	.use(
 		swagger({
 			documentation: {
+				components: {
+					securitySchemes: {
+						apiKey: {
+							description: "API ключ для аутентификации",
+							in: "header",
+							name: "x-api-key",
+							type: "apiKey",
+						},
+					},
+				},
 				info: {
 					description: "API для управления ноутбуками и их свойствами",
 					title: "PropsLaptops API",
 					version: process.env.IMAGE_TAG || "dev",
 				},
+				security: [{ apiKey: [] }],
 				tags: [
 					{ description: "CRUD для ноутбуков", name: "laptops" },
 					{ description: "CRUD для свойств", name: "properties" },

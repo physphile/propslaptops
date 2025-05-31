@@ -24,6 +24,7 @@ services:
       DB_NAME: propslaptops_db
       DB_USER: propslaptops
       DB_PASSWORD: propslaptops
+      API_KEYS: kek
     depends_on:
       - db
 
