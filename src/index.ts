@@ -5,7 +5,7 @@ import { Elysia } from "elysia";
 import { laptopRoutes } from "./routes/laptop";
 import { propertyRoutes } from "./routes/property";
 
-const app = new Elysia()
+const app = new Elysia({ prefix: "/api/v1" })
 	.use(cors())
 	.use(
 		swagger({
