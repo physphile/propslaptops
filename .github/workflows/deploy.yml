@@ -52,6 +52,7 @@ jobs:
           vm-memory: 2Gb
           vm-core-fraction: 100
           vm-subnet-id: ${{ secrets.YC_SUBNET_ID }}
+          user-data-path: './user-data.yaml'
           container-image: cr.yandex/${{ env.CR_REGISTRY }}/propslaptops:${{ github.event.release.tag_name }}
           container-env: |
             DB_HOST=${{ secrets.DB_HOST }}
