@@ -44,7 +44,7 @@ jobs:
       - name: Deploy to Serverless Container
         uses: yc-actions/yc-sls-container-deploy@v3
         with:
-          yc-sa-id: ${{ env.DEPLOY_SA_ID }}
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
           container-name: propslaptops
           folder-id: ${{ env.FOLDER_ID }}
           revision-service-account-id: ${{ env.RUNTIME_SA_ID }}
@@ -54,7 +54,7 @@ jobs:
           revision-concurrency: 8
           revision-image-url: cr.yandex/${{ env.CR_REGISTRY }}/propslaptops:${{ github.event.release.tag_name }}
           revision-execution-timeout: 30
-          revision-environment: |
+          revision-env: |
             {
               "DB_HOST": "${{ secrets.DB_HOST }}",
               "DB_PORT": "${{ secrets.DB_PORT }}",
